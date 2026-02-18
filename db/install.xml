@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/authors/db" VERSION="2026021800" COMMENT="XMLDB file for Moodle tool_authors"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="tool_authors_log" COMMENT="Log table for tracking authorship of course modules">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course ID"/>
+        <FIELD NAME="moduleid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course module ID (cmid)"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User ID of the editing teacher"/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Unix timestamp"/>
+        <FIELD NAME="action" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Action type: create, update, delete"/>
+        <FIELD NAME="modtype" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Module type: quiz, forum, assign, etc"/>
+        <FIELD NAME="modname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Module name"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="moduleid" TYPE="foreign" FIELDS="moduleid" REFTABLE="course_modules" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course_module" UNIQUE="false" FIELDS="courseid, moduleid" COMMENT="Index for course and module queries"/>
+        <INDEX NAME="user_module" UNIQUE="false" FIELDS="userid, moduleid" COMMENT="Index for user and module queries"/>
+        <INDEX NAME="timestamp_idx" UNIQUE="false" FIELDS="timestamp" COMMENT="Index for timestamp queries"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
